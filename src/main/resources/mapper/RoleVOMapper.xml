@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hjh.dao.IRoleDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hjh.po.RoleVO" >
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_create_date" property="roleCreateDate" jdbcType="DATE" />
+    <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="is_lock" property="isLock" jdbcType="INTEGER" />
+  </resultMap>
+    <sql id="Base_Column_List" >
+      role_id, role_name,date_format(role_create_date ,'%Y-%c-%d') AS role_create_date, role_desc, is_lock
+    </sql>
+
+  <!--select start-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+      select
+      <include refid="Base_Column_List" />
+      from role
+      where role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from role
+    </select>
+  <!--select end-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hjh.po.RoleVO" >
+    insert into role (role_id, role_name, role_create_date, 
+      role_desc, is_lock)
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleCreateDate,jdbcType=DATE}, 
+      #{roleDesc,jdbcType=VARCHAR}, #{isLock,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hjh.po.RoleVO" >
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleCreateDate != null" >
+        role_create_date,
+      </if>
+      <if test="roleDesc != null" >
+        role_desc,
+      </if>
+      <if test="isLock != null" >
+        is_lock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCreateDate != null" >
+        #{roleCreateDate,jdbcType=DATE},
+      </if>
+      <if test="roleDesc != null" >
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isLock != null" >
+        #{isLock,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hjh.po.RoleVO" >
+    update role
+    <set >
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCreateDate != null" >
+        role_create_date = #{roleCreateDate,jdbcType=DATE},
+      </if>
+      <if test="roleDesc != null" >
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isLock != null" >
+        is_lock = #{isLock,jdbcType=INTEGER},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hjh.po.RoleVO" >
+    update role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_create_date = #{roleCreateDate,jdbcType=DATE},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      is_lock = #{isLock,jdbcType=INTEGER}
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+</mapper>

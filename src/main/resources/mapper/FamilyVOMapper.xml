@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hjh.dao.IFamilyDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hjh.po.FamilyVO" >
+    <id column="family_id" property="familyId" jdbcType="VARCHAR" />
+    <result column="family_name" property="familyName" jdbcType="VARCHAR" />
+    <result column="family_desc" property="familyDesc" jdbcType="VARCHAR" />
+    <result column="family_extr" property="familyExtr" jdbcType="VARCHAR" />
+    <result column="family_extr_1" property="familyExtr1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    family_id, family_name, family_desc, family_extr, family_extr_1
+  </sql>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List" />
+        from family
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from family
+    where family_id = #{familyId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from family
+    where family_id = #{familyId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hjh.po.FamilyVO" >
+    insert into family (family_id, family_name, family_desc, 
+      family_extr, family_extr_1)
+    values (#{familyId,jdbcType=VARCHAR}, #{familyName,jdbcType=VARCHAR}, #{familyDesc,jdbcType=VARCHAR}, 
+      #{familyExtr,jdbcType=VARCHAR}, #{familyExtr1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hjh.po.FamilyVO" >
+    insert into family
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="familyId != null" >
+        family_id,
+      </if>
+      <if test="familyName != null" >
+        family_name,
+      </if>
+      <if test="familyDesc != null" >
+        family_desc,
+      </if>
+      <if test="familyExtr != null" >
+        family_extr,
+      </if>
+      <if test="familyExtr1 != null" >
+        family_extr_1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="familyId != null" >
+        #{familyId,jdbcType=VARCHAR},
+      </if>
+      <if test="familyName != null" >
+        #{familyName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyDesc != null" >
+        #{familyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="familyExtr != null" >
+        #{familyExtr,jdbcType=VARCHAR},
+      </if>
+      <if test="familyExtr1 != null" >
+        #{familyExtr1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hjh.po.FamilyVO" >
+    update family
+    <set >
+      <if test="familyName != null" >
+        family_name = #{familyName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyDesc != null" >
+        family_desc = #{familyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="familyExtr != null" >
+        family_extr = #{familyExtr,jdbcType=VARCHAR},
+      </if>
+      <if test="familyExtr1 != null" >
+        family_extr_1 = #{familyExtr1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where family_id = #{familyId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hjh.po.FamilyVO" >
+    update family
+    set family_name = #{familyName,jdbcType=VARCHAR},
+      family_desc = #{familyDesc,jdbcType=VARCHAR},
+      family_extr = #{familyExtr,jdbcType=VARCHAR},
+      family_extr_1 = #{familyExtr1,jdbcType=VARCHAR}
+    where family_id = #{familyId,jdbcType=VARCHAR}
+  </update>
+</mapper>

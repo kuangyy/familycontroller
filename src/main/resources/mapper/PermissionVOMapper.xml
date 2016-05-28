@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hjh.dao.IPermissionDao">
+    <resultMap id="BaseResultMap" type="com.cn.hjh.po.PermissionVO">
+        <id column="permission_id" property="permissionId" jdbcType="INTEGER"/>
+        <result column="permission_name" property="permissionName" jdbcType="VARCHAR"/>
+        <result column="permission_url" property="permissionUrl" jdbcType="VARCHAR"/>
+        <result column="permission_parent_id" property="permissionParentId" jdbcType="INTEGER"/>
+        <result column="permission_extr" property="permissionExtr" jdbcType="VARCHAR"/>
+        <result column="permission_extr2" property="permissionExtr2" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="permissionVO" type="com.cn.hjh.po.PermissionVO" extends="BaseResultMap">
+        <collection property="permissions" ofType="com.cn.hjh.po.PermissionVO" javaType="list">
+            <id column="permissionId" jdbcType="INTEGER" property="permissionId"/>
+            <result column="permissionName" jdbcType="VARCHAR" property="permissionName"/>
+            <result column="permissionUrl" jdbcType="VARCHAR" property="permissionUrl"/>
+            <result column="permissionParentID" jdbcType="INTEGER" property="permissionParentId"/>
+            <result column="permissionExtr" jdbcType="VARCHAR" property="permissionExtr"></result>
+        </collection>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    permission_id, permission_name, permission_url, permission_parent_id, permission_extr, 
+    permission_extr2
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from permission
+        where permission_id = #{permissionId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from permission
+        where permission_id = #{permissionId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cn.hjh.po.PermissionVO">
+        insert into permission (permission_id, permission_name, permission_url,
+          permission_parent_id, permission_extr, permission_extr2
+          )
+        values (#{permissionId,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permissionUrl,jdbcType=VARCHAR},
+          #{permissionParentId,jdbcType=INTEGER}, #{permissionExtr,jdbcType=VARCHAR}, #{permissionExtr2,jdbcType=VARCHAR}
+          )
+    </insert>
+    <insert id="insertSelective" parameterType="com.cn.hjh.po.PermissionVO">
+        insert into permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="permissionId != null">
+                permission_id,
+            </if>
+            <if test="permissionName != null">
+                permission_name,
+            </if>
+            <if test="permissionUrl != null">
+                permission_url,
+            </if>
+            <if test="permissionParentId != null">
+                permission_parent_id,
+            </if>
+            <if test="permissionExtr != null">
+                permission_extr,
+            </if>
+            <if test="permissionExtr2 != null">
+                permission_extr2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="permissionId != null">
+                #{permissionId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionName != null">
+                #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionUrl != null">
+                #{permissionUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionParentId != null">
+                #{permissionParentId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionExtr != null">
+                #{permissionExtr,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionExtr2 != null">
+                #{permissionExtr2,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cn.hjh.po.PermissionVO">
+        update permission
+        <set>
+            <if test="permissionName != null">
+                permission_name = #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionUrl != null">
+                permission_url = #{permissionUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionParentId != null">
+                permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionExtr != null">
+                permission_extr = #{permissionExtr,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionExtr2 != null">
+                permission_extr2 = #{permissionExtr2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where permission_id = #{permissionId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cn.hjh.po.PermissionVO">
+        update permission
+        set permission_name = #{permissionName,jdbcType=VARCHAR},
+          permission_url = #{permissionUrl,jdbcType=VARCHAR},
+          permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+          permission_extr = #{permissionExtr,jdbcType=VARCHAR},
+          permission_extr2 = #{permissionExtr2,jdbcType=VARCHAR}
+        where permission_id = #{permissionId,jdbcType=INTEGER}
+    </update>
+    <select id="selectPermissionByUserId" parameterType="int" resultMap="permissionVO">
+        SELECT a.permission_id,a.permission_name,a.permission_url,a.permission_parent_id,
+        b.permission_id AS permissinId,b.permission_name AS permissionName,b.permission_parent_id AS permissionParentId,
+        b.permission_url AS permissionUrl,b.permission_extr as permissionExtr
+        FROM
+        (SELECT p.permission_id ,p.permission_name,p.permission_url,p.permission_parent_id  FROM permission p WHERE p.permission_id IN
+        (SELECT permission_id FROM role_permission WHERE role_id IN (SELECT role_id FROM user_role WHERE user_id = #{userId}))
+        )AS a
+        LEFT JOIN
+        (SELECT p.permission_id ,p.permission_name,p.permission_url,p.permission_parent_id,p.permission_extr  FROM permission p WHERE p.permission_id IN
+        (SELECT permission_id FROM role_permission WHERE role_id IN (SELECT role_id FROM user_role WHERE user_id = #{userId}))
+        )AS b
+        ON a.permission_id = b.permission_parent_id WHERE a.permission_parent_id = 0
+    </select>
+    <!--选择所有的权限的 然后和用户一起选择出来-->
+    <select id = "selectPermissionAllByUserId" parameterType="int" resultMap="BaseResultMap">
+       SELECT  p.permission_id, p.permission_name, p.permission_parent_id,r.role_id,(CASE  WHEN r.role_id IS NULL THEN 'false' ELSE 'true' END) permission_extr
+	   FROM permission p
+       LEFT OUTER  JOIN  role_permission r ON p.permission_id = r.permission_id AND r.role_id=#{roleId}
+    </select>
+    <delete id = "deletePermission" parameterType="com.cn.hjh.po.PermissionVO"  >
+        delete from role_permission
+        where role_id = #{permissionExtr2} and permission_id = #{permissionId}
+    </delete>
+    <insert id ="addPermission" parameterType="com.cn.hjh.po.PermissionVO">
+        insert  role_permission(role_id,permission_id) values(#{permissionExtr2},#{permissionId})
+    </insert>
+
+</mapper>

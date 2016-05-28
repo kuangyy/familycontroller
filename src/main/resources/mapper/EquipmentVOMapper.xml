@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hjh.dao.IEquipmentDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hjh.po.EquipmentVO" >
+    <id column="equipment_id" property="equipmentId" jdbcType="VARCHAR" />
+    <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
+    <result column="equipment_type_id" property="equipmentTypeId" jdbcType="INTEGER" />
+    <result column="room_id" property="roomId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    equipment_id, equipment_name, equipment_type_id, room_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from equipment
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from equipment
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hjh.po.EquipmentVO" >
+    insert into equipment (equipment_id, equipment_name, equipment_type_id, 
+      room_id)
+    values (#{equipmentId,jdbcType=VARCHAR}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentTypeId,jdbcType=INTEGER}, 
+      #{roomId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hjh.po.EquipmentVO" >
+    insert into equipment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="equipmentId != null" >
+        equipment_id,
+      </if>
+      <if test="equipmentName != null" >
+        equipment_name,
+      </if>
+      <if test="equipmentTypeId != null" >
+        equipment_type_id,
+      </if>
+      <if test="roomId != null" >
+        room_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="equipmentId != null" >
+        #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentName != null" >
+        #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentTypeId != null" >
+        #{equipmentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        #{roomId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hjh.po.EquipmentVO" >
+    update equipment
+    <set >
+      <if test="equipmentName != null" >
+        equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentTypeId != null" >
+        equipment_type_id = #{equipmentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hjh.po.EquipmentVO" >
+    update equipment
+    set equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      equipment_type_id = #{equipmentTypeId,jdbcType=INTEGER},
+      room_id = #{roomId,jdbcType=INTEGER}
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+  </update>
+</mapper>

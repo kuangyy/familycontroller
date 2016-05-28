@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hjh.dao.IRoomDao" >
+  <resultMap id="BaseResultMap" type="com.cn.hjh.po.RoomVO" >
+    <id column="room_id" property="roomId" jdbcType="INTEGER" />
+    <result column="room_name" property="roomName" jdbcType="VARCHAR" />
+    <result column="family_id" property="familyId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    room_id, room_name, family_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from room
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from room
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hjh.po.RoomVO" >
+    insert into room (room_id, room_name, family_id
+      )
+    values (#{roomId,jdbcType=INTEGER}, #{roomName,jdbcType=VARCHAR}, #{familyId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hjh.po.RoomVO" >
+    insert into room
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roomId != null" >
+        room_id,
+      </if>
+      <if test="roomName != null" >
+        room_name,
+      </if>
+      <if test="familyId != null" >
+        family_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roomId != null" >
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="roomName != null" >
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyId != null" >
+        #{familyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hjh.po.RoomVO" >
+    update room
+    <set >
+      <if test="roomName != null" >
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="familyId != null" >
+        family_id = #{familyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hjh.po.RoomVO" >
+    update room
+    set room_name = #{roomName,jdbcType=VARCHAR},
+      family_id = #{familyId,jdbcType=VARCHAR}
+    where room_id = #{roomId,jdbcType=INTEGER}
+  </update>
+</mapper>
