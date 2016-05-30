@@ -1,6 +1,7 @@
 package com.cn.hjh.module.mina.session;
 
 
+import com.cn.hjh.module.mina.message.MessageVO;
 import org.apache.mina.core.session.IoSession;
 
 
@@ -32,11 +33,9 @@ public class MyConnection {
 		this.ioSession = ioSession;
 	}
 
-
-
-	
 	//发送
-	public void deliver() {
+	public synchronized void  deliver(MessageVO m) {
+		ioSession.write(m.toJson());
 	}
 	
 	

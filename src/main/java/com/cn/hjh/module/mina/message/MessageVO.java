@@ -9,15 +9,20 @@ import com.google.gson.Gson;
  * 消息的父类
  *
  */
-public class MessageVO implements Serializable {
+public class MessageVO implements Serializable,Cloneable{
 	
 	//手机的id 
 	public static final int ADDRESS_PHONE = 1;
 	//家庭的id
 	public static final int ADDRESS_FAMILY = 0;
-	
-	//属性 登录
-	public static final int MESSAGE_LOGIN = 1;
+
+	//login status
+	public static final  int STAUTS_LOGIN = 1;
+
+	//
+	public static final int STATUS_CONTROLLER = 2;
+	//
+	public static final int STATUS_RESPONSE =3;
 
 	//from where
 	protected String from;
