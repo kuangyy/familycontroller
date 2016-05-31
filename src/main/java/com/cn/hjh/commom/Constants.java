@@ -14,4 +14,7 @@ public class Constants {
 
     //工程的名字
     public static final String ITEM_NAME  = "item_name";
+
+    //设备类型跳转路径
+    public static final String JUMP_EQUIPMENT_TYPE  = "backage/equipmentType/";
 }

@@ -15,7 +15,7 @@ public class LoginMessage extends  MessageVO {
     public LoginMessage(String userName,String password){
         this.userName = userName;
         this.password = password;
-        this.messageStatus = MESSAGE_LOGIN;
+        this.messageStatus = MessageVO.STAUTS_LOGIN;
         this.device = MessageVO.ADDRESS_PHONE;
         this.from  = "123";
         this.to = "123";

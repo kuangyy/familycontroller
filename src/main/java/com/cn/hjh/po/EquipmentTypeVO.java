@@ -30,4 +30,9 @@ public class EquipmentTypeVO {
     public void setEquipmentTypeClassName(String equipmentTypeClassName) {
         this.equipmentTypeClassName = equipmentTypeClassName == null ? null : equipmentTypeClassName.trim();
     }
+
+    @Override
+    public String toString() {
+        return "equipmentTypeId:"+equipmentTypeId+"equipmentTypeName:"+equipmentTypeName+"equipmentTypeClassName"+equipmentTypeClassName;
+    }
 }

@@ -14,4 +14,6 @@ public interface IEquipmentDao {
     int updateByPrimaryKeySelective(EquipmentVO record);
 
     int updateByPrimaryKey(EquipmentVO record);
+
+
 }

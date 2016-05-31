@@ -2,6 +2,8 @@ package com.cn.hjh.dao;
 
 import com.cn.hjh.po.EquipmentTypeVO;
 
+import java.util.List;
+
 public interface IEquipmentTypeDao {
     int deleteByPrimaryKey(Integer equipmentTypeId);
 
@@ -14,4 +16,6 @@ public interface IEquipmentTypeDao {
     int updateByPrimaryKeySelective(EquipmentTypeVO record);
 
     int updateByPrimaryKey(EquipmentTypeVO record);
+
+    List<EquipmentTypeVO> getList();
 }
